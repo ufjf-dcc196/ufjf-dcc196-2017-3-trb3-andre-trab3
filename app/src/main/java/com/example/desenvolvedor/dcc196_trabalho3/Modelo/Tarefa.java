@@ -8,23 +8,30 @@ public class Tarefa {
     private int id;
     private String titulo;
     private String descricao;
+    private int dificuldade;
     private String estado;//A fazer , Em Execução, Bloqueada e Concluida
 
-    public Tarefa(int id, String titulo, String descricao, String estado) {
+    public Tarefa(int id, String titulo, String descricao, int dificuldade, String estado) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
+        this.dificuldade = dificuldade;
         this.estado = estado;
     }
 
-    public Tarefa(String titulo, String descricao, String estado) {
+
+    public Tarefa() {
+    }
+
+    public Tarefa(String titulo, String descricao, int dificuldade, String estado) {
         this.titulo = titulo;
         this.descricao = descricao;
+        this.dificuldade = dificuldade;
         this.estado = estado;
     }
 
     public int getId() {
-        return id;
+            return id;
     }
 
     public void setId(int id) {
@@ -47,11 +54,24 @@ public class Tarefa {
         this.descricao = descricao;
     }
 
+    public int getDificuldade() {
+        return dificuldade;
+    }
+
+    public void setDificuldade(int dificuldade) {
+        this.dificuldade = dificuldade;
+    }
+
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return titulo;
     }
 }
