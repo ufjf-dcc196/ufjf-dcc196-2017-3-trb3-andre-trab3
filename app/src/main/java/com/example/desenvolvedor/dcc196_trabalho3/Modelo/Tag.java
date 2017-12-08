@@ -7,15 +7,14 @@ package com.example.desenvolvedor.dcc196_trabalho3.Modelo;
 public class Tag {
 
     private int id;
-    private Tarefa tarefa;
+    private String tag;
 
-    public Tag(int id, Tarefa tarefa) {
+    public Tag(int id, String tag) {
         this.id = id;
-        this.tarefa = tarefa;
+        tag = tag;
     }
 
-    public Tag(Tarefa tarefa) {
-        this.tarefa = tarefa;
+    public Tag() {
     }
 
     public int getId() {
@@ -26,11 +25,16 @@ public class Tag {
         this.id = id;
     }
 
-    public Tarefa getTarefa() {
-        return tarefa;
+    public String getTag() {
+        return tag;
     }
 
-    public void setTarefa(Tarefa tarefa) {
-        this.tarefa = tarefa;
+    public void setTag(String tag) {
+        tag = tag;
+    }
+
+    @Override
+    public String toString() {
+        return tag;
     }
 }

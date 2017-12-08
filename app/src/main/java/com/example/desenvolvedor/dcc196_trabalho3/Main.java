@@ -45,9 +45,6 @@ public class Main extends AppCompatActivity {
 
 
 
-
-
-
         btnTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

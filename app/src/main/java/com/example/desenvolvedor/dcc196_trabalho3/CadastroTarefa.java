@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.desenvolvedor.dcc196_trabalho3.DAO.TagDAO;
 import com.example.desenvolvedor.dcc196_trabalho3.DAO.TarefaDAO;
+import com.example.desenvolvedor.dcc196_trabalho3.Modelo.Tag;
 import com.example.desenvolvedor.dcc196_trabalho3.Modelo.Tarefa;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class CadastroTarefa extends AppCompatActivity {
     private Spinner spDificuldade;
     private Spinner spEstado;
     private Button btnSalvar;
+    private Button btnSalvarTag;
+    private Spinner spTag;
 
 
     public Tarefa tarefa;
@@ -39,8 +43,16 @@ public class CadastroTarefa extends AppCompatActivity {
         edtDescricao= (EditText) findViewById(R.id.txtDescricao);
         spDificuldade =(Spinner) findViewById(R.id.spDificuldade);
         spEstado =(Spinner) findViewById(R.id.spEstado);
-
+        spTag=(Spinner) findViewById(R.id.spTag);
         btnSalvar= (Button) findViewById(R.id.btnSalvar);
+        btnSalvarTag= (Button) findViewById(R.id.btnTag);
+
+
+
+
+
+
+
 
 
 
@@ -79,7 +91,12 @@ public class CadastroTarefa extends AppCompatActivity {
 
         }
 
+        btnSalvarTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override

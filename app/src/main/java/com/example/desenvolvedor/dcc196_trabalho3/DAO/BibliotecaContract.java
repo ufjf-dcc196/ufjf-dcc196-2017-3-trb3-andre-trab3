@@ -8,6 +8,9 @@ import android.provider.BaseColumns;
 
 public class BibliotecaContract {
 
+
+
+
     private static final String TYPE_TEXT = " VARCHAR";
     private static final String TYPE_INT = " INTEGER";
     private static final String SEP = ", ";
