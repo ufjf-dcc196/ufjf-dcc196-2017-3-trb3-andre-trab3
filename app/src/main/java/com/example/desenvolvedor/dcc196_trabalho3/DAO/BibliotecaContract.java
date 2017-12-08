@@ -62,7 +62,7 @@ public class BibliotecaContract {
     }
 
     static class Relacao implements  BaseColumns {
-        static final String TABLE_NAME = "TagTarefa";
+        static final String TABLE_NAME = "relacao";
         static final String COLUMN_TAREFA = "tarefa";
         static final String COLUMN_TAG = "tag";
 

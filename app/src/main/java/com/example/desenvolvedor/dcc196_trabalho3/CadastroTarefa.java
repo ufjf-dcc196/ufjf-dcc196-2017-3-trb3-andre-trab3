@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -17,6 +18,9 @@ import com.example.desenvolvedor.dcc196_trabalho3.Modelo.Tarefa;
 import java.util.ArrayList;
 
 public class CadastroTarefa extends AppCompatActivity {
+
+
+    private ListView lista;
 
 
     private EditText edtTitulo;
@@ -48,9 +52,16 @@ public class CadastroTarefa extends AppCompatActivity {
         btnSalvarTag= (Button) findViewById(R.id.btnTag);
 
 
+        lista = (ListView) findViewById(R.id.taglist);
 
 
 
+
+        TagDAO tagDAO=new TagDAO(getApplicationContext());
+
+        ArrayAdapter<Tag> taga = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagDAO.getTodasTags() );
+        tagDAO.close();
+        spTag.setAdapter(taga);
 
 
 
@@ -95,6 +106,13 @@ public class CadastroTarefa extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
+
+
+
+
+
             }
         });
 
@@ -133,6 +151,8 @@ public class CadastroTarefa extends AppCompatActivity {
         });
 
     }
+
+
 
 
 }

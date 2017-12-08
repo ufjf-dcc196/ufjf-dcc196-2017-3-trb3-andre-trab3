@@ -3,12 +3,14 @@ package com.example.desenvolvedor.dcc196_trabalho3;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.desenvolvedor.dcc196_trabalho3.DAO.TagDAO;
+import com.example.desenvolvedor.dcc196_trabalho3.DAO.TarefaDAO;
 import com.example.desenvolvedor.dcc196_trabalho3.Modelo.Tag;
 
 public class CadastroTag extends AppCompatActivity {
@@ -16,14 +18,22 @@ public class CadastroTag extends AppCompatActivity {
 
     private EditText edtNomeTag;
     private Button btnSalvar;
+    private ListView lista;
 
-    private ListView listaTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_tag);
 
+
+
+        lista = (ListView) findViewById(R.id.ListaTag2);
+
+
+
+
+        UpdateListaTarefas();
         Button btnSalvar = (Button) findViewById(R.id.btnsss);
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
@@ -39,11 +49,21 @@ public class CadastroTag extends AppCompatActivity {
                 tagDAO.close();
 
                 Toast.makeText(getApplicationContext(), "Salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                UpdateListaTarefas();
 
-                finish();
             }
         });
     }
 
 
+    private void UpdateListaTarefas() {
+        TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+
+        TagDAO tagDAO=new TagDAO(getApplicationContext());
+
+
+        ArrayAdapter<Tag> taga = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagDAO.getTodasTags() );
+        tagDAO.close();
+        lista.setAdapter(taga);
+    }
 }

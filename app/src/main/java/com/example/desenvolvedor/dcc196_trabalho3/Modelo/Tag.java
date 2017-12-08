@@ -11,7 +11,7 @@ public class Tag {
 
     public Tag(int id, String tag) {
         this.id = id;
-        tag = tag;
+        this.tag = tag;
     }
 
     public Tag() {
@@ -30,7 +30,7 @@ public class Tag {
     }
 
     public void setTag(String tag) {
-        tag = tag;
+        this.tag = tag;
     }
 
     @Override

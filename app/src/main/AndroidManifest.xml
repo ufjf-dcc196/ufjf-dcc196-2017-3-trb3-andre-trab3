@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CadastroTarefa" />
-        <activity android:name=".CadastroTag"></activity>
+        <activity android:name=".CadastroTag" />
+        <activity android:name=".Tag"></activity>
     </application>
 
 </manifest>
