@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.desenvolvedor.dcc196_trabalho3.DAO.RelacaoDAO;
 import com.example.desenvolvedor.dcc196_trabalho3.DAO.TagDAO;
 import com.example.desenvolvedor.dcc196_trabalho3.DAO.TarefaDAO;
 import com.example.desenvolvedor.dcc196_trabalho3.Modelo.Tag;
@@ -20,7 +21,8 @@ import java.util.ArrayList;
 public class CadastroTarefa extends AppCompatActivity {
 
 
-    private ListView lista;
+
+    private ListView listaTag;
 
 
     private EditText edtTitulo;
@@ -29,10 +31,12 @@ public class CadastroTarefa extends AppCompatActivity {
     private Spinner spEstado;
     private Button btnSalvar;
     private Button btnSalvarTag;
+    private Button btnExcluir;
     private Spinner spTag;
 
 
     public Tarefa tarefa;
+
 
 
 
@@ -45,25 +49,22 @@ public class CadastroTarefa extends AppCompatActivity {
 
         edtTitulo= (EditText) findViewById(R.id.txtTitulo);
         edtDescricao= (EditText) findViewById(R.id.txtDescricao);
+
         spDificuldade =(Spinner) findViewById(R.id.spDificuldade);
         spEstado =(Spinner) findViewById(R.id.spEstado);
         spTag=(Spinner) findViewById(R.id.spTag);
+
         btnSalvar= (Button) findViewById(R.id.btnSalvar);
         btnSalvarTag= (Button) findViewById(R.id.btnTag);
-
-
-        lista = (ListView) findViewById(R.id.taglist);
-
+        btnExcluir= (Button) findViewById(R.id.btnExcluir);
+        listaTag = (ListView) findViewById(R.id.taglist);
 
 
 
         TagDAO tagDAO=new TagDAO(getApplicationContext());
-
         ArrayAdapter<Tag> taga = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tagDAO.getTodasTags() );
         tagDAO.close();
         spTag.setAdapter(taga);
-
-
 
 
 
@@ -79,6 +80,7 @@ public class CadastroTarefa extends AppCompatActivity {
         TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
 
         tarefa = new Tarefa();
+
         if(getIntent().getSerializableExtra("TAREFA") != null){
 
             ArrayList<Tarefa> tarefas= tarefaDAO.GetTodasTarefas();
@@ -92,29 +94,33 @@ public class CadastroTarefa extends AppCompatActivity {
 
                     spEstado.setSelection(adapterEstado.getPosition(tarefa.getEstado()));
                     spDificuldade.setSelection(adapterDificudade.getPosition(tarefa.getDificuldade()));
-                    auxiliarALterar=1;
+                    auxiliarALterar=-1;
 
 
-            }
-
+                }
             }
 
 
         }
+if(auxiliarALterar==-1){
+
+
+    updatelistaTagUtilizadas();
+}
+
+
 
         btnSalvarTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                RelacaoDAO relacaoDAO= new RelacaoDAO(getApplicationContext());
+                relacaoDAO.inserirAtribuicao(tarefa,(Tag)spTag.getSelectedItem());
+                updatelistaTagUtilizadas();
 
-
-
-
-
-
-
-
+                relacaoDAO.close();
             }
         });
+
 
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,16 +128,19 @@ public class CadastroTarefa extends AppCompatActivity {
                 Tarefa tarefa= new Tarefa();
                 TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
 
-
-                if(auxiliarALterar==0){
+                if(auxiliarALterar!=-1){
 
                     tarefa.setTitulo(edtTitulo.getText().toString());
                     tarefa.setDescricao(edtDescricao.getText().toString());
                     tarefa.setDificuldade(spDificuldade.getSelectedItem().hashCode());
                     tarefa.setEstado(spEstado.getSelectedItem().toString());
                     tarefaDAO.inserirTarefa(tarefa);
-                    Toast.makeText(getApplicationContext(), "111111Tarefa salva com Sucesso", Toast.LENGTH_LONG).show();
-                    }
+
+
+
+
+                    Toast.makeText(getApplicationContext(), "Tarefa salva com Sucesso=id="+((Tag) spTag.getSelectedItem()).getId(), Toast.LENGTH_LONG).show();
+            }
                     else {
 
                     Toast.makeText(getApplicationContext(), "22222Tarefa salva com Sucesso", Toast.LENGTH_LONG).show();
@@ -143,13 +152,41 @@ public class CadastroTarefa extends AppCompatActivity {
                     }
                     tarefaDAO.close();
 
-                Toast.makeText(getApplicationContext(), "Tarefa salva com Sucesso", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Tarefa Alterada com Sucesso", Toast.LENGTH_LONG).show();
 
                 finish();
 
             }
         });
 
+    }
+
+
+    private void updatelistaTagUtilizadas() {
+        RelacaoDAO relacaoDAO= new RelacaoDAO(getApplicationContext());
+
+        ArrayList<Integer> tags = relacaoDAO.getTag(this.tarefa.getId());
+
+        ArrayList<String> nomeTarefa=new ArrayList<>();
+
+        TagDAO tagDAO= new TagDAO(getBaseContext());
+        ArrayList<Tag> tarefas= tagDAO.getTodasTags();
+
+        for(int i=0; i<tarefas.size();i++) {
+            for(int j=0; j<tags.size();j++) {
+
+                if(tarefas.get(i).getId()==tags.get(j)) {
+                    nomeTarefa.add(tarefas.get(i).getTag());
+                }
+            }
+        }
+
+        tagDAO.close();
+
+        relacaoDAO.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,nomeTarefa);
+        listaTag.setAdapter(adapter);
     }
 
 

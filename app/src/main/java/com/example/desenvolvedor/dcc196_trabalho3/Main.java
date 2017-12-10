@@ -41,7 +41,7 @@ public class Main extends AppCompatActivity {
           Intent intent = new Intent(getBaseContext(), CadastroTarefa.class);
           startActivity(intent);
       }
-        });
+              });
 
 
 

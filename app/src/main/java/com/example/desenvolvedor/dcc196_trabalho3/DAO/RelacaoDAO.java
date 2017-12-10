@@ -16,52 +16,61 @@ import java.util.ArrayList;
 
 public class RelacaoDAO extends BibliotecaDbHelper {
 
-    public RelacaoDAO(Context context) {
-        super(context);
-    }
+        public RelacaoDAO(Context context) {
+            super(context);
+        }
 
-    public void inserirAtribuicao(Tarefa tarefa, Tag tag) {
-        SQLiteDatabase db = getWritableDatabase();
+        public void inserirAtribuicao(Tarefa tarefa, Tag tag) {
+            SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(BibliotecaContract.Relacao.COLUMN_TAREFA, tarefa.getId());
-        values.put(BibliotecaContract.Relacao.COLUMN_TAG, tag.getId());
+            ContentValues values = new ContentValues();
+            values.put(BibliotecaContract.Relacao.COLUMN_TAREFA, tarefa.getId());
+            values.put(BibliotecaContract.Relacao.COLUMN_TAG, tag.getId());
+            db.insert(BibliotecaContract.Relacao.TABLE_NAME, null, values);
 
-        db.insert(BibliotecaContract.Relacao.TABLE_NAME, null, values);
+        }
 
-    }
-
-    public ArrayList<Tarefa> buscarTarefasAssociadas(Tag tag) {
+        public ArrayList<Integer> getTarefa(int idTag) {
         SQLiteDatabase db = getReadableDatabase();
 
-        final String sql = "SELECT * FROM "+BibliotecaContract.Tarefa.TABLE_NAME+
-                " INNER JOIN "+BibliotecaContract.Relacao.TABLE_NAME+" ON "+
-                BibliotecaContract.Tarefa.TABLE_NAME+"."+BibliotecaContract.Tarefa._ID+" = "+
-                BibliotecaContract.Relacao.TABLE_NAME+"."+BibliotecaContract.Relacao.COLUMN_TAREFA+
-                " WHERE "+BibliotecaContract.Relacao.TABLE_NAME+"."+BibliotecaContract.Relacao.COLUMN_TAG+" = ?";
+        Cursor cursor = db.rawQuery("SELECT "+BibliotecaContract.Relacao.COLUMN_TAREFA+" FROM " + BibliotecaContract.Relacao.TABLE_NAME + " WHERE " + BibliotecaContract.Relacao.COLUMN_TAG + "=" + idTag, null);
 
 
-        String[] id = {String.valueOf(tag.getId())};
+        ArrayList<Integer> tarefas = new ArrayList<>();
+        while (cursor.moveToNext()) {
 
-        Cursor cursor = db.rawQuery(sql, id);
+            tarefas.add(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Relacao.COLUMN_TAREFA)));
 
-        ArrayList<Tarefa> tarefas = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            Tarefa tarefa = new Tarefa();
-
-            tarefa.setId(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Tarefa._ID)));
-            tarefa.setTitulo(cursor.getString(cursor.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_TITULO)));
-            tarefa.setDescricao(cursor.getString(cursor.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_DESCRICAO)));
-            tarefa.setDificuldade(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_DIFICULDADE)));
-            tarefa.setEstado(cursor.getString(cursor.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_ESTADO)));
-
-            tarefas.add(tarefa);
         }
 
         cursor.close();
-
         return tarefas;
+
+        }
+
+        public ArrayList<Integer> getTag ( int idTarefa){
+
+
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT "+BibliotecaContract.Relacao.COLUMN_TAG+" FROM " + BibliotecaContract.Relacao.TABLE_NAME + " WHERE " + BibliotecaContract.Relacao.COLUMN_TAREFA + "=" + idTarefa, null);
+
+            ArrayList<Integer> tags = new ArrayList<>();
+            while (cursor.moveToNext()) {
+
+
+
+                tags.add(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Relacao.COLUMN_TAG)));
+
+
+            }
+
+            cursor.close();
+
+            return tags;
+        }
+
+
     }
 
 
-}
+

@@ -61,14 +61,33 @@ public class TarefaDAO extends BibliotecaDbHelper {
         return tarefas;
     }
 
+    public Tarefa getTarefa(int id){
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM "+BibliotecaContract.Tarefa.TABLE_NAME+" WHERE id="+id,null);
+
+
+            Tarefa tarefa = new Tarefa();
+
+            tarefa.setId(c.getInt(c.getColumnIndex(BibliotecaContract.Tarefa._ID)));
+            tarefa.setTitulo(c.getString(c.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_TITULO)));
+            tarefa.setDescricao(c.getString(c.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_DESCRICAO)));
+            tarefa.setDificuldade(c.getInt(c.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_DIFICULDADE)));
+            tarefa.setEstado(c.getString(c.getColumnIndex(BibliotecaContract.Tarefa.COLUMN_ESTADO)));
+
+
+
+        c.close();
+
+        return tarefa;
+    }
+
 
     public void alterarTarefa(Tarefa tarefa){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = retornaDadosTarefa(tarefa);
         String[] id ={String.valueOf(tarefa.getId())};
         db.update(BibliotecaContract.Tarefa.TABLE_NAME, values, BibliotecaContract.Tarefa._ID+" = ?", id);
-
-
     }
 
     public void removerTarefa(Tarefa tarefa) {

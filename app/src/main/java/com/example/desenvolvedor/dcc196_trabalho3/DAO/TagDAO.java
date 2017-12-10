@@ -40,6 +40,34 @@ public class TagDAO extends BibliotecaDbHelper {
 
         cursor.close();
 
+
+
         return tags;
+    }
+
+
+
+
+
+
+    public Tag getTag(int id){
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM "+BibliotecaContract.Tag.TABLE_NAME+" WHERE "+BibliotecaContract.Tag._ID+"="+id,null);
+
+
+        while(cursor.moveToNext()) {
+            Tag tag = new Tag();
+
+            tag.setId(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Tag._ID)));
+            tag.setTag(cursor.getString(cursor.getColumnIndex(BibliotecaContract.Tag.COLUMN_TAG)));
+            return tag;
+        }
+        cursor.close();
+
+        return null;
+
+
+
     }
 }

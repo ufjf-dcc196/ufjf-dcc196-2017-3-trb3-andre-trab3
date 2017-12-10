@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".CadastroTarefa" />
         <activity android:name=".CadastroTag" />
-        <activity android:name=".Tag"></activity>
+        <activity android:name=".Tag" />
+        <activity android:name=".ViewTarefasDaTag"></activity>
     </application>
 
 </manifest>

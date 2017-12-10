@@ -52,9 +52,9 @@ public class BibliotecaContract {
         static final String SQL_CREATE_TAG = "CREATE TABLE "+
                 Tag.TABLE_NAME+" ("+
                 Tag._ID+TYPE_INT+" PRIMARY KEY AUTOINCREMENT"+SEP+
-                Tag.COLUMN_TAG+TYPE_TEXT+")";
+                Tag.COLUMN_TAG + TYPE_TEXT+")";
 
-        static final String SQL_DROP_TAG = "DROP TABLE IF EXISTS "+
+        static final String SQL_DROP_TAG= "DROP TABLE IF EXISTS "+
                 Tag.TABLE_NAME;
 
         static final String SQL_SELECT_TAGS = "SELECT * FROM "+
@@ -64,7 +64,7 @@ public class BibliotecaContract {
     static class Relacao implements  BaseColumns {
         static final String TABLE_NAME = "relacao";
         static final String COLUMN_TAREFA = "tarefa";
-        static final String COLUMN_TAG = "tag";
+        static final String COLUMN_TAG ="tag";
 
         static final String SQL_CREATE_RELACAO= "CREATE TABLE "+
                 Relacao.TABLE_NAME+" ("+
@@ -72,8 +72,11 @@ public class BibliotecaContract {
                 Relacao.COLUMN_TAREFA+TYPE_INT+" REFERENCES "+Tarefa.TABLE_NAME+" ON DELETE CASCADE"+SEP+
                 Relacao.COLUMN_TAG+TYPE_INT+" REFERENCES "+Tag.TABLE_NAME+" ON DELETE CASCADE)";
 
-        static final String SQL_DROP_RELACAO = "DROP TABLE IF EXISTS "+
+
+        static final String SQL_SELECT_RELACAO= "SELECT * FROM "+
                 Relacao.TABLE_NAME;
+
+
 
 
     }
