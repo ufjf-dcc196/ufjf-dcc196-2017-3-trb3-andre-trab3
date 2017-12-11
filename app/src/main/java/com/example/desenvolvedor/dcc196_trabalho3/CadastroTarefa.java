@@ -57,8 +57,9 @@ public class CadastroTarefa extends AppCompatActivity {
         btnSalvar= (Button) findViewById(R.id.btnSalvar);
         btnSalvarTag= (Button) findViewById(R.id.btnTag);
         btnExcluir= (Button) findViewById(R.id.btnExcluir);
+        btnExcluir.setEnabled(false);
         listaTag = (ListView) findViewById(R.id.taglist);
-
+        btnSalvarTag.setEnabled(false);
 
 
         TagDAO tagDAO=new TagDAO(getApplicationContext());
@@ -95,28 +96,46 @@ public class CadastroTarefa extends AppCompatActivity {
                     spEstado.setSelection(adapterEstado.getPosition(tarefa.getEstado()));
                     spDificuldade.setSelection(adapterDificudade.getPosition(tarefa.getDificuldade()));
                     auxiliarALterar=-1;
-
+                    btnExcluir.setEnabled(true);
+                     btnSalvarTag.setEnabled(true);
 
                 }
             }
 
 
         }
-if(auxiliarALterar==-1){
+        if(auxiliarALterar==-1){
+            updatelistaTagUtilizadas();
+        }
 
 
-    updatelistaTagUtilizadas();
-}
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelacaoDAO relacaoDAO= new RelacaoDAO(getApplicationContext());
+                relacaoDAO.removerRelacao(tarefa.getId());
 
 
+                relacaoDAO.close();
 
+                TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+
+                tarefaDAO.removerTarefa(tarefa);
+
+                tarefaDAO.close(); Tarefa tarefa= new Tarefa();
+                Toast.makeText(getApplicationContext(), "Tarefa excluida '"+tarefa.getTitulo()+"' excluida com sucesso", Toast.LENGTH_LONG).show();
+                finish();
+
+            }
+        });
         btnSalvarTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RelacaoDAO relacaoDAO= new RelacaoDAO(getApplicationContext());
                 relacaoDAO.inserirAtribuicao(tarefa,(Tag)spTag.getSelectedItem());
-                updatelistaTagUtilizadas();
-
+                if(auxiliarALterar==-1) {
+                    updatelistaTagUtilizadas();
+                }
                 relacaoDAO.close();
             }
         });
@@ -139,11 +158,11 @@ if(auxiliarALterar==-1){
 
 
 
-                    Toast.makeText(getApplicationContext(), "Tarefa salva com Sucesso=id="+((Tag) spTag.getSelectedItem()).getId(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Tarefa salva com Sucesso!", Toast.LENGTH_LONG).show();
             }
                     else {
 
-                    Toast.makeText(getApplicationContext(), "22222Tarefa salva com Sucesso", Toast.LENGTH_LONG).show();
+
                     CadastroTarefa.this.tarefa.setTitulo(edtTitulo.getText().toString());
                     CadastroTarefa.this.tarefa.setDescricao(edtDescricao.getText().toString());
                     CadastroTarefa.this.tarefa.setDificuldade(spDificuldade.getSelectedItem().hashCode());
@@ -152,7 +171,7 @@ if(auxiliarALterar==-1){
                     }
                     tarefaDAO.close();
 
-                Toast.makeText(getApplicationContext(), "Tarefa Alterada com Sucesso", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Tarefa alterada com Sucesso!", Toast.LENGTH_LONG).show();
 
                 finish();
 
@@ -177,6 +196,7 @@ if(auxiliarALterar==-1){
 
                 if(tarefas.get(i).getId()==tags.get(j)) {
                     nomeTarefa.add(tarefas.get(i).getTag());
+
                 }
             }
         }

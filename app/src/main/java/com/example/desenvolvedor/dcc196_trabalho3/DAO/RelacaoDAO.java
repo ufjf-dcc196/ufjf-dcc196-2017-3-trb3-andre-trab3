@@ -21,14 +21,20 @@ public class RelacaoDAO extends BibliotecaDbHelper {
         }
 
         public void inserirAtribuicao(Tarefa tarefa, Tag tag) {
-            SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
 
-            ContentValues values = new ContentValues();
-            values.put(BibliotecaContract.Relacao.COLUMN_TAREFA, tarefa.getId());
-            values.put(BibliotecaContract.Relacao.COLUMN_TAG, tag.getId());
-            db.insert(BibliotecaContract.Relacao.TABLE_NAME, null, values);
+        ContentValues values = new ContentValues();
+        values.put(BibliotecaContract.Relacao.COLUMN_TAREFA, tarefa.getId());
+        values.put(BibliotecaContract.Relacao.COLUMN_TAG, tag.getId());
+        db.insert(BibliotecaContract.Relacao.TABLE_NAME, null, values);
 
-        }
+    }
+
+    public void removerRelacao(int tarefa) {
+        SQLiteDatabase db = getWritableDatabase();
+        String[] id ={String.valueOf(tarefa)};
+        db.delete(BibliotecaContract.Relacao.TABLE_NAME, BibliotecaContract.Relacao.COLUMN_TAREFA+" = ?", id);
+    }
 
         public ArrayList<Integer> getTarefa(int idTag) {
         SQLiteDatabase db = getReadableDatabase();
@@ -50,20 +56,12 @@ public class RelacaoDAO extends BibliotecaDbHelper {
 
         public ArrayList<Integer> getTag ( int idTarefa){
 
-
             SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT "+BibliotecaContract.Relacao.COLUMN_TAG+" FROM " + BibliotecaContract.Relacao.TABLE_NAME + " WHERE " + BibliotecaContract.Relacao.COLUMN_TAREFA + "=" + idTarefa, null);
-
             ArrayList<Integer> tags = new ArrayList<>();
             while (cursor.moveToNext()) {
-
-
-
                 tags.add(cursor.getInt(cursor.getColumnIndex(BibliotecaContract.Relacao.COLUMN_TAG)));
-
-
             }
-
             cursor.close();
 
             return tags;

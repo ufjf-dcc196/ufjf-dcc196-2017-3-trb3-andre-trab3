@@ -61,6 +61,9 @@ public class BibliotecaContract {
                 Tag.TABLE_NAME;
     }
 
+
+
+
     static class Relacao implements  BaseColumns {
         static final String TABLE_NAME = "relacao";
         static final String COLUMN_TAREFA = "tarefa";
@@ -71,10 +74,6 @@ public class BibliotecaContract {
                 Relacao._ID+TYPE_INT+" PRIMARY KEY AUTOINCREMENT"+SEP+
                 Relacao.COLUMN_TAREFA+TYPE_INT+" REFERENCES "+Tarefa.TABLE_NAME+" ON DELETE CASCADE"+SEP+
                 Relacao.COLUMN_TAG+TYPE_INT+" REFERENCES "+Tag.TABLE_NAME+" ON DELETE CASCADE)";
-
-
-        static final String SQL_SELECT_RELACAO= "SELECT * FROM "+
-                Relacao.TABLE_NAME;
 
 
 
